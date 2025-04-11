@@ -58,6 +58,7 @@ export default function GlobalContextProvider({ children }: { children: ReactNod
     const [tokensData,setTokensData]=useState<any | undefined>(null);
     const siteNocheck=['/app/signin','/app/signup'];
     const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+    alert(url)
 
   useEffect(()=>{
         const localToken=localStorage.getItem('token')

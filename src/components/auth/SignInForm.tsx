@@ -25,6 +25,7 @@ export default function SignInForm() {
     try {
       setSection(0)
       const dataSent={email:inputEmail,password:inputClave};
+      console.log(url+'/login/users/login',url,import.meta.env.VITE_IS_PRODUCTION,import.meta.env.VITE_URL_PRODUCTION,import.meta.env.VITE_URL_TEST)
       const dataUser = await fetch(url+'/login/users/login', {
           method: 'POST',
           headers: {
