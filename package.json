@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "preview4000": "vite preview --port 4000",
+    "preview4000": "vite preview --port 4000 --host",
     "build2": "vite build"
   },
   "dependencies": {
