@@ -1,0 +1,574 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Chatter.plus API",
+    "description": "## Introduction\n\nWelcome to our WhatsApp API documentation. This guide will walk you through the available endpoints and the authentication process to interact with WhatsApp using our API.\n\n---\n\n## Instances\n\nOur API is based on **instances**, each equivalent to a WhatsApp account. From our web app or the API, you can create, modify, and delete instances. Once created, you must run the **Init** process, where you will receive a QR code to link the instance to your WhatsApp account. Once linked, you're ready to go: you can search for contacts, view chats and messages, download media, and send both text and multimedia messages.\n\n.\n\n Steps to Use an Instance\n\n1. **Create instance**  \nUse the API or web app to create a new instance (represents a WhatsApp session).\n\n2. **Initialize instance (Init)**  \nCall the Init endpoint to generate a QR code.\n\n3. **Scan the QR code**  \nUse your WhatsApp app to scan the QR code and link the account.\n\n4. **Instance is ready**  \nAfter linking, the instance becomes active and ready to use.\n\n5. **Start sending/receiving**  \nYou can now send messages, read chats, get contacts, and download media using the API.\n\n---\n\n## Authentication (Bearer Token)\n\nTo access our API, you must authenticate using a **Bearer Token**. This token is your **API Key**, which you receive when registering on our platform.\n\nEvery request to a protected endpoint must include this token in the **Authorization header**.\n\n### Example\n\nIn your request, add the following HTTP header:\n\n```\nAuthorization: Bearer YOUR_API_KEY_HERE\n```\n\nReplace `YOUR_API_KEY_HERE` with the actual API Key you received. This header tells the server that you're an authenticated user.\n\n> ⚠️ If you forget to include this header, or if the key is invalid or expired, the API will respond with a 401 Unauthorized error.\n\nYou can include this header manually or use the **Authorize** button in this documentation UI to make it easier.",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Instances & Connection",
+      "description": "Get the listing, create, modify or delete an instance. Each instance is equivalent to a connection with WhatsApp"
+    },
+    {
+      "name": "Send and receive messages",
+      "description": "Operations with your WhatsApp account. You will be able to view your contacts, view your chats, view your chat messages, send messages, send multimedia (images, audio, video, gift, stickers) and download received multimedia files."
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://chatter.plus/api"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/instance/get": {
+      "post": {
+        "tags": ["Instances & Connection"],
+        "summary": "Get list of instances",
+        "description": "Receive the list of all instances of the user.",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/create": {
+      "post": {
+        "tags": ["Instances & Connection"],
+        "summary": "Create an Instance",
+        "description": "Create a WhatsApp instance.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_create_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/delete": {
+      "post": {
+        "tags": ["Instances & Connection"],
+        "summary": "Delete an Instance",
+        "description": "Delete a WhatsApp instance.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_delete_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/edit": {
+      "post": {
+        "tags": ["Instances & Connection"],
+        "summary": "Edit an Instance",
+        "description": "Edit a WhatsApp instance.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_edit_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/init": {
+      "post": {
+        "tags":["Instances & Connection"],
+        "summary": "Init an Instance",
+        "description": "Init a WhatsApp instance and get a QR code.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_init_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/contacts": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Get your contacts",
+        "description": "Get your contact list.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_contacts_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/chat": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Get chat messages",
+        "description": "Get your conversation with a user or group.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_chat_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/message": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Get message information",
+        "description": "Get message information.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_message_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/media": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Get media from a message",
+        "description": "Download message media.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_media_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/send": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Send Message",
+        "description": "Send a message through an active WhatsApp instance.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_send_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/instance/sendmedia": {
+      "post": {
+        "tags":["Send and receive messages"],
+        "summary": "Send Media Message",
+        "description": "Send a media message through an active WhatsApp instance.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/instance_sendmedia_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "instance_create_body": {
+        "name":"Instance create : Body params",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "webhook": {
+            "type": "string",
+            "description": "URL for message notifications"
+          }
+        }
+      },
+      "instance_delete_body": {
+        "required": [
+          "instanceId"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          }
+        }
+      },
+      "instance_edit_body": {
+        "required": [
+          "instanceId"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "name": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "webhook": {
+            "type": "string",
+            "description": "URL for message notifications"
+          }
+        }
+      },
+      "instance_init_body": {
+        "required": [
+          "instanceId"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          }
+        }
+      },
+      "instance_contacts_body": {
+        "required": [
+          "instanceId"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          }
+        }
+      },
+      "instance_chat_body": {
+        "required": [
+          "instanceId",
+          "remoteJid"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "remoteJid": {
+            "type": "string",
+            "description": "ID of user or group"
+          },
+          "qty": {
+            "type": "integer",
+            "description": "Quantity of messages"
+          }
+        }
+      },
+      "instance_message_body": {
+        "required": [
+          "instanceId",
+          "messageId",
+          "remoteJid"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "remoteJid": {
+            "type": "string",
+            "description": "ID of user or group"
+          },
+          "messageId": {
+            "type": "string",
+            "description": "ID of message"
+          }
+        }
+      },
+      "instance_media_body": {
+        "required": [
+          "instanceId",
+          "messageId",
+          "remoteJid"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "remoteJid": {
+            "type": "string",
+            "description": "ID of user or group"
+          },
+          "messageId": {
+            "type": "string",
+            "description": "ID of message"
+          }
+        }
+      },
+      "instance_send_body": {
+        "required": [
+          "instanceId",
+          "message",
+          "remoteJid"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "remoteJid": {
+            "type": "string",
+            "description": "ID of user or group"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message to send"
+          }
+        }
+      },
+      "instance_sendmedia_body": {
+        "required": [
+          "caption",
+          "fileUrl",
+          "instanceId",
+          "mimetype",
+          "remoteJid",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "ID of the instance"
+          },
+          "remoteJid": {
+            "type": "string",
+            "description": "ID of user or group"
+          },
+          "fileUrl": {
+            "type": "string",
+            "description": "URL of your media"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Caption for your media"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of your media",
+            "enum": [
+              "document",
+              "image",
+              "audio",
+              "video"
+            ]
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type of your file",
+            "example": "image/png"
+          },
+          "document": {
+            "type": "boolean",
+            "description": "Send as a file",
+            "default": false
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Name of your file when 'document' is true"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
