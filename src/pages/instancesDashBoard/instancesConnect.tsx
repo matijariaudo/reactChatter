@@ -21,7 +21,7 @@ function InstancesConnectionForm({instanceConfig,setAction,action}:{instanceConf
     const [status,setStatus]=useState<string>('init')
     const [qr,setQr]=useState<string>('');
     const [idFetch,setIdFetch]=useState('');
-    const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+    const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
 
     async function checkInstance(){
         try {

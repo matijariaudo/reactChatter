@@ -18,7 +18,7 @@ export default function SignInForm() {
   const [editPassword,seteditPassword]=useState(false);
   const [messageError, setMessageError] = useState("");
   const [newPassEmail,setNewPassEmail]=useState('')
-  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
   
 
   const loginForm=async()=>{

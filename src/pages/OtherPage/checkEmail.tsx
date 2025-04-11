@@ -9,7 +9,7 @@ export default function CheckEmail() {
   const [available, setAvailable] = useState(true);
   const [section, setSection] = useState(1);
   const {user,userToken}=useGlobalData();
-  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
 
   const setNewPassword=async()=>{
     setSection(0)

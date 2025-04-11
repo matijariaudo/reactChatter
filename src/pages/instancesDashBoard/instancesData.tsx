@@ -29,7 +29,7 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
     const [chats,setChats]=useState();
     const [inputWrite,setInputWrite]=useState('')
     const scrollRef = useRef<HTMLDivElement>(null);
-    const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+    const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
 
     const [contactChoose,setContactChoose]=useState<{
       id: string;

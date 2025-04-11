@@ -15,7 +15,7 @@ export default function UserMetaCard() {
   const [newPass2,setNewPass2]=useState('');
   const [section, setSection] = useState(1);
   const [messageError, setMessageError] = useState("");
-  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
 
   useEffect(()=>{
     if(typeAction=='password'){

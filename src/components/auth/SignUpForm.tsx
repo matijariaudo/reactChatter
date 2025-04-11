@@ -13,7 +13,7 @@ export default function SignUpForm() {
   const [inputEmail,setInputEmail] = useState('')
   const [inputClave,setInputClave] = useState('')
   const [inputName,setInputName] = useState('');
-  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?import.meta.env.VITE_URL_PRODUCTION:import.meta.env.VITE_URL_TEST;
+  const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
 
   useEffect(()=>{
     let check=true;
