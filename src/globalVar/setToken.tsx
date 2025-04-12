@@ -24,7 +24,7 @@ const SetToken = ({ type }: { type: boolean }) => {
   useEffect(() => {
     if (!type) {
       localStorage.removeItem('token');
-      navigate("/app/signin");
+      window.location.href = "/";
     }
   }, [type]);
 

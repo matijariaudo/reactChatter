@@ -77,7 +77,8 @@ export default function SignInForm() {
         <div style={{display:section==1?'block':'none'}} >
           <div className="mb-5 sm:mb-8 mt-10">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Sign In
+              <img src="images/logo/logo.png" className="flex dark:hidden"/>
+              <img src="images/logo/logo-dark.png" className="hidden dark:flex"/>
             </h1>
           </div>
           <div>
@@ -128,7 +129,7 @@ export default function SignInForm() {
                 <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="p-2 text-gray-400 bg-white dark:bg-gray-900 sm:px-5 sm:py-2">
+                <span className="p-2 text-gray-400 bg-[#FDFDFE] dark:bg-[#101828] sm:px-5 sm:py-2">
                   Or
                 </span>
               </div>

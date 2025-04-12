@@ -861,3 +861,8 @@ span.flatpickr-weekday,
 .dark .bg-cover-center::before {
   background: linear-gradient(to right, rgba(16, 25, 40, 1), rgba(16, 25, 40, 0.7), rgba(16, 25, 40, 0.4)); /* Oscuro */
 }
+
+.gradient-border {
+  border: 3px solid #00D5B5;
+  border-radius: 3px;
+}

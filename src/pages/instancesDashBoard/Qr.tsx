@@ -41,7 +41,7 @@ const QRCodeComponent = ({ text }: { text: string }) => {
             {/* QR para modo claro */}
             <div
                 ref={qrRef}
-                className="flex dark:hidden"
+                className="flex dark:hidden gradient-border"
                 style={{
                     alignItems: "center",
                     width: "220px",
@@ -54,7 +54,7 @@ const QRCodeComponent = ({ text }: { text: string }) => {
             {/* QR para modo oscuro */}
             <div
                 ref={qrRefDark}
-                className="hidden dark:flex"
+                className="hidden dark:flex gradient-border"
                 style={{
                     alignItems: "center",
                     width: "220px",
@@ -64,6 +64,9 @@ const QRCodeComponent = ({ text }: { text: string }) => {
                     padding: "0",
                 }}
             />
+            <div style={{margin:'-140px 0px 80px 80px',height:'60px',width:'60px',zIndex:9999}}>
+                <img src="/app/images/template/wsplogo.gif" className="gradient-border" style={{width:'90px',borderRadius:'1000px',border:'3px solid #00D5B5'}}></img>
+            </div>
         </>
     );
 };

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ComponentCard from "../../components/common/ComponentCard";
-import PhoneInput from "../../components/form/group-input/PhoneInput";
 import Input from "../../components/form/input/InputField";
 import Label from "../../components/form/Label";
 import Select from "../../components/form/Select";
@@ -32,7 +31,7 @@ export default function InstancesFrom({show,setAction}:{show:boolean,setAction:(
             setAction(2)
            return 
         }else{
-           setAction(100) 
+           setAction(99); 
         }
     }
     function isValidURL(str:string) {

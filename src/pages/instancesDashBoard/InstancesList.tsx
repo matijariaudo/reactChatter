@@ -26,8 +26,15 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
   }
 
   useEffect(()=>{
+    console.log("ACTIONNN",action)
     if(action==100){
+      console.log(action,"AAAC")
       setAction(0)
+      fetchInstances()
+    }
+    if(action==99){
+      console.log(action,"AAAB")
+      setAction(3)
       fetchInstances()
     }
   },[action])
@@ -42,8 +49,8 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
   },[instances,buttonConnected])
 
   useEffect(()=>{
-    
-    if(instances){setAction(1)}
+    console.log(action,"AAAA")
+    if(instances){if(action!=3){setAction(1)}}
   },[instancesShowArray])
 
   return (
@@ -75,7 +82,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
       <p className="text-m my-2 text-gray-500 dark:text-white/50">Each instance is a connection to a WhatsApp account. After creating it, you'll get a QR code to link the instance with your WhatsApp.</p>
           
       </div>
-      <div className="max-w-full overflow-x-auto">
+      <div className="max-w-full overflow-x-auto hidden md:flex">
         <Table className={`${instancesShowArray.length==0?'hidden':''}`}>
           {/* Table Header */}
           <TableHeader className={`border-gray-100 dark:border-gray-800 border-y `}>
@@ -157,15 +164,47 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
             ))}
           </TableBody>
           </Table>
-          <ModalEliminar open={open} setOpen={setOpen} setAction={setAction} instanceDelete={instanceDelete}></ModalEliminar>
-          {instancesShowArray.length==0?<div className="text-gray-300" style={{width:'100%',textAlign:'center',padding:'10px'}}>
+          
+      </div>
+      <div className="max-w-full md:hidden">
+          {instancesShowArray.map((instance:any,i:number) => (
+                <div key={i} className="border-1 text-black dark:text-white p-2 mb-2 rounded-xl border-[#d9d9d9] dark:border-[#49484a]">
+                <div className="float-right m-1">
+                <Badge
+                    size="sm"
+                    color={
+                      instance.session === "connected"
+                        ? "success"
+                        : instance.session === "close"
+                        ? "error"
+                        : "error"
+                    }
+                
+                  >
+                    {instance.session!='connected'?'Disconnected':'Connected'}
+                </Badge>
+                </div>
+                <a className="text-xs">{instance.type}</a>
+                <h3>{instance.name}</h3>
+                  <button onClick={()=>{setOpen(true);setInstanceDelete(instance.instanceId)}} 
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
+                  <TrashBinIcon/>
+                  </button>
+                  <button onClick={()=>{checkInstance(instance.instanceId)}} 
+                  className={`items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[4px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 ${instance.session=='connected'?'hidden':'inline-flex'}`}> 
+                  Connect <img src="images/icons/whatsapp.png" className="w-[15px] dark:invert-[0.7]"/>
+                  </button>
+                  </div>
+            ))}
+      </div>
+      <ModalEliminar open={open} setOpen={setOpen} setAction={setAction} instanceDelete={instanceDelete}></ModalEliminar>
+      {instancesShowArray.length==0?<div className="text-gray-300" style={{width:'100%',textAlign:'center',padding:'10px'}}>
             <p>There aren't instances yet </p>
             <button onClick={()=>{setAction(2)}} className="mt-5 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
               Create new instance 
             </button>
             <br />
           </div>:''}
-      </div>
     </div>
   );
 }

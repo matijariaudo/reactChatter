@@ -115,11 +115,13 @@ function InstancesConnectionForm({instanceConfig,setAction,action}:{instanceConf
             <p>1- Open your whatsapp or whatsapp bussiness in your phone.</p>
             <p>2- Open linked devices.</p>
             <p>3- Scan the following QR code.</p>
-            <hr />
             <div className={`${status=='qr'?'':'hidden'}`}>
             <div className={`${qr!=''?'':'hidden'}`}><QRCodeComponent text={qr || ''} /></div>
             <div className={`${qr!=''?'hidden':''}`}>
-                <button disabled={true} className="mt-0 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> Loading QR </button>
+                <div style={{width: "150px",height:"150px",textAlign:'center'}}>
+                    <div className="lds-hourglass"></div>
+                      <p style={{marginTop:'-30px'}}>Loading QR</p>
+                    </div>
             </div>
             </div>
             <div className={`${(status=='connected' || status=='connecting')?'':'hidden'}`}>
