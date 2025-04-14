@@ -56,7 +56,7 @@ export default function GlobalContextProvider({ children }: { children: ReactNod
     const [instances,setIntances]=useState<any | undefined>(null);
     const [tokens,setTokens]=useState<any | undefined>();
     const [tokensData,setTokensData]=useState<any | undefined>(null);
-    const siteNocheck=['/app/signin','/app/signup'];
+    const siteNocheck=['/app/signin','/app/signup','/app/documentation'];
     const url=import.meta.env.VITE_IS_PRODUCTION!='FALSE'?'':import.meta.env.VITE_URL_TEST;
   
   useEffect(()=>{
