@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Chatter.plus API",
-    "description": "## Introduction\n\nWelcome to our WhatsApp API documentation. This guide will walk you through the available endpoints and the authentication process to interact with WhatsApp using our API.\n\n---\n\n## Instances\n\nOur API is based on **instances**, each equivalent to a WhatsApp account. From our web app or the API, you can create, modify, and delete instances. Once created, you must run the **Init** process, where you will receive a QR code to link the instance to your WhatsApp account. Once linked, you're ready to go: you can search for contacts, view chats and messages, download media, and send both text and multimedia messages.\n\n.\n\n Steps to Use an Instance\n\n1. **Create instance**  \nUse the API or web app to create a new instance (represents a WhatsApp session).\n\n2. **Initialize instance (Init)**  \nCall the Init endpoint to generate a QR code.\n\n3. **Scan the QR code**  \nUse your WhatsApp app to scan the QR code and link the account.\n\n4. **Instance is ready**  \nAfter linking, the instance becomes active and ready to use.\n\n5. **Start sending/receiving**  \nYou can now send messages, read chats, get contacts, and download media using the API.\n\n---\n\n## Authentication (Bearer Token)\n\nTo access our API, you must authenticate using a **Bearer Token**. This token is your **API Key**, which you receive when registering on our platform.\n\nEvery request to a protected endpoint must include this token in the **Authorization header**.\n\n### Example\n\nIn your request, add the following HTTP header:\n\n```\nAuthorization: Bearer YOUR_API_KEY_HERE\n```\n\nReplace `YOUR_API_KEY_HERE` with the actual API Key you received. This header tells the server that you're an authenticated user.\n\n> ⚠️ If you forget to include this header, or if the key is invalid or expired, the API will respond with a 401 Unauthorized error.\n\nYou can include this header manually or use the **Authorize** button in this documentation UI to make it easier.",
+    "description": "## Introduction\n\nWelcome to our WhatsApp API documentation. This guide will walk you through the available endpoints and the authentication process to interact with WhatsApp using our API.\n\n---\n\n## Instances\n\nOur API is based on **instances**, each equivalent to a WhatsApp account. From our web app or the API, you can create, modify, and delete instances. Once created, you must run the **Init** process, where you will receive a QR code to link the instance to your WhatsApp account. Once linked, you're ready to go: you can search for contacts, view chats and messages, download media, and send both text and multimedia messages.\n\n.\n\n Steps to Use an Instance\n\n1. **Create instance**  \nUse the API or web app to create a new instance (represents a WhatsApp session).\n\n2. **Initialize instance (Init)**  \nCall the Init endpoint to generate a QR code.\n\n3. **Scan the QR code**  \nUse your WhatsApp app to scan the QR code and link the account.\n\n4. **Instance is ready**  \nAfter linking, the instance becomes active and ready to use.\n\n5. **Start sending/receiving**  \nYou can now send messages, read chats, get contacts, and download media using the API.\n\n---\n\n## Authentication (Bearer Token)\n\nTo access our API, you must authenticate using a **Bearer Token**. This token is your **API Key**, which you receive when registering on our platform.\n\nEvery request to a protected endpoint must include this token in the **Authorization header**.\n\n### Example\n\nIn your request, add the following HTTP header:\n\n```\nAuthorization: Bearer YOUR_API_KEY_HERE\n```\n\n Replace `YOUR_API_KEY_HERE` with the actual API Key you received. This header tells the server that you're an authenticated user.\n\n> ⚠️ If you forget to include this header, or if the key is invalid or expired, the API will respond with a 401 Unauthorized error.\n\nYou can include this header manually or use the **Authorize** button in this documentation UI to make it easier.",
     "version": "1.0.0"
   },
   "tags": [
@@ -30,13 +30,70 @@
       "post": {
         "tags": ["Instances & Connection"],
         "summary": "Get list of instances",
-        "description": "Receive the list of all instances of the user.",
+        "description": "Get all your active WhatsApp instances or a specific one using its ID.\n\n<details>\n<summary>📘 View Code Examples</summary>\n\n**cURL**\n```bash\n# Obtener todas las instancias\ncurl -X POST https://chatter.plus/api/instance/get \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{}'\n\n# Obtener una instancia específica\ncurl -X POST https://chatter.plus/api/instance/get \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"instanceId\": \"64f3b2a8eae52c001fd12345\"}'\n```\n\n**Node.js (Axios)**\n```js\naxios.post('https://chatter.plus/api/instance/get', {\n  instanceId: '64f3b2a8eae52c001fd12345' // // or remove to get all instances\n}, {\n  headers: {\n    Authorization: 'Bearer YOUR_API_KEY'\n  }\n}).then(res => console.log(res.data));\n```\n\n**Python (requests)**\n```python\nimport requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_API_KEY\"}\nbody = {\"instanceId\": \"64f3b2a8eae52c001fd12345\"}  # o body = {} para todas\n\nres = requests.post(\"https://chatter.plus/api/instance/get\", json=body, headers=headers)\nprint(res.json())\n```\n\n</details>",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "instanceId": {
+                    "type": "string",
+                    "description": "Optional ID of the instance"
+                  }
+                }
+              },
+              "examples": {
+                "Todas las instancias": {
+                  "value": {}
+                },
+                "Una instancia específica": {
+                  "value": {
+                    "instanceId": "64f3b2a8eae52c001fd12345"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success - Instances data returned",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": 200,
+                  "error": null,
+                  "message": "Instances data sent",
+                  "data": {
+                    "instances": [
+                      {
+                        "_id": "64f3b2a8eae52c001fd12345",
+                        "name": "myInstance",
+                        "status": "active",
+                        "qr": "data:image/png;base64,..."
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Error"
+            "description": "Error - Invalid request or instance not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": 400,
+                  "error": "The operation has failed",
+                  "message": "-",
+                  "data": {
+                    "error": "The requested instance does not exist."
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -45,28 +102,87 @@
           }
         ]
       }
-    },
+    }
+,
     "/instance/create": {
       "post": {
         "tags": ["Instances & Connection"],
         "summary": "Create an Instance",
-        "description": "Create a WhatsApp instance.",
+        "description": "Create a WhatsApp instance (session). The name is required. Optionally, you can define a webhook and instance type.\n\n<details>\n<summary>📘 View Code Examples</summary>\n\n**cURL**\n```bash\ncurl -X POST https://chatter.plus/api/instance/create \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"name\": \"myInstance\",\n    \"webhook\": \"https://example.com/webhook\",\n    \"type\": \"trial\"\n  }'\n```\n\n**Node.js (Axios)**\n```js\nconst axios = require('axios');\n\naxios.post('https://chatter.plus/api/instance/create', {\n  name: 'myInstance',\n  webhook: 'https://example.com/webhook',\n  type: 'trial'\n}, {\n  headers: {\n    Authorization: 'Bearer YOUR_API_KEY'\n  }\n}).then(res => console.log(res.data));\n```\n\n**Python (requests)**\n```python\nimport requests\n\nheaders = {\n    \"Authorization\": \"Bearer YOUR_API_KEY\"\n}\n\nbody = {\n    \"name\": \"myInstance\",\n    \"webhook\": \"https://example.com/webhook\",\n    \"type\": \"trial\"\n}\n\nres = requests.post(\"https://chatter.plus/api/instance/create\", json=body, headers=headers)\nprint(res.json())\n```\n\n</details>",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/instance_create_body"
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the instance"
+                  },
+                  "webhook": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Optional webhook URL to receive messages"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["full", "trial", "free"],
+                    "description": "Optional instance type (Default: free )"
+                  }
+                }
+              },
+              "example": {
+                "name": "myInstance",
+                "webhook": "https://example.com/webhook",
+                "type": "trial"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Instance created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": 200,
+                  "error": null,
+                  "message": "The instance has been created.",
+                  "data": {
+                    "instance": {
+                      "_id": "xyz123",
+                      "name": "myInstance",
+                      "webhook": "https://example.com/webhook",
+                      "type": "trial",
+                      "start": 1710000000
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Error"
+            "description": "Validation or creation error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": 400,
+                  "error": "Body params issues",
+                  "message": "An error has occurred with the parameters received, please check and try again",
+                  "data": {
+                    "errors": [
+                      {
+                        "msg": "You must enter a name",
+                        "param": "name",
+                        "location": "body"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -75,12 +191,13 @@
           }
         ]
       }
-    },
+    }
+  ,
     "/instance/delete": {
       "post": {
         "tags": ["Instances & Connection"],
         "summary": "Delete an Instance",
-        "description": "Delete a WhatsApp instance.",
+        "description": "Delete a WhatsApp instance.\n\n<details>\n<summary>📘 View Code Examples</summary>\n\n**cURL**\n```bash\n# Delete an instance\ncurl -X POST https://chatter.plus/api/instance/delete \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"instanceId\": \"64f3b2a8eae52c001fd12345\"}'\n```\n\n**Node.js (Axios)**\n```js\naxios.post('https://chatter.plus/api/instance/delete', {\n  instanceId: '64f3b2a8eae52c001fd12345' // Replace with the instance ID you want to delete\n}, {\n  headers: {\n    Authorization: 'Bearer YOUR_API_KEY'\n  }\n}).then(res => console.log(res.data));\n```\n\n**Python (requests)**\n```python\nimport requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_API_KEY\"}\nbody = {\"instanceId\": \"64f3b2a8eae52c001fd12345\"}  # Replace with the instance ID you want to delete\n\nres = requests.post(\"https://chatter.plus/api/instance/delete\", json=body, headers=headers)\nprint(res.json())\n```\n\n</details>",
         "requestBody": {
           "content": {
             "application/json": {
@@ -93,10 +210,42 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "200",
+                      "message": "Your instance has been correctly deleted.",
+                      "data": {
+                        "instance": {
+                          "instanceId": "64f3b2a8eae52c001fd12345",
+                          "status": "delete",
+                          "end": 1679878400
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "value": {
+                      "status": "400",
+                      "message": "The operation has failed",
+                      "error": "The instance has not been correctly deleted."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -105,12 +254,13 @@
           }
         ]
       }
-    },
+    }
+,
     "/instance/edit": {
       "post": {
         "tags": ["Instances & Connection"],
         "summary": "Edit an Instance",
-        "description": "Edit a WhatsApp instance.",
+        "description": "Edit a WhatsApp instance.\n\n<details>\n<summary>📘 View Code Examples</summary>\n\n**cURL**\n```bash\n# Edit an instance\ncurl -X POST https://chatter.plus/api/instance/edit \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"instanceId\": \"64f3b2a8eae52c001fd12345\", \"name\": \"New Instance Name\", \"webhook\": \"https://example.com/webhook\"}'\n```\n\n**Node.js (Axios)**\n```js\naxios.post('https://chatter.plus/api/instance/edit', {\n  instanceId: '64f3b2a8eae52c001fd12345',\n  name: 'New Instance Name', // Optional\n  webhook: 'https://example.com/webhook', // Optional\n}, {\n  headers: {\n    Authorization: 'Bearer YOUR_API_KEY'\n  }\n}).then(res => console.log(res.data));\n```\n\n**Python (requests)**\n```python\nimport requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_API_KEY\"}\nbody = {\n  \"instanceId\": \"64f3b2a8eae52c001fd12345\",\n  \"name\": \"New Instance Name\",  # Optional\n  \"webhook\": \"https://example.com/webhook\",  # Optional\n}\n\nres = requests.post(\"https://chatter.plus/api/instance/edit\", json=body, headers=headers)\nprint(res.json())\n```\n\n</details>",
         "requestBody": {
           "content": {
             "application/json": {
@@ -123,10 +273,43 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "200",
+                      "message": "Instance has been modified.",
+                      "data": {
+                        "instance": {
+                          "instanceId": "64f3b2a8eae52c001fd12345",
+                          "name": "New Instance Name",
+                          "webhook": "https://example.com/webhook",
+                          "type": "newType"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "value": {
+                      "status": "400",
+                      "message": "The operation has failed",
+                      "error": "Your chat has not correctly found."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -135,12 +318,13 @@
           }
         ]
       }
-    },
+    }
+,
     "/instance/init": {
       "post": {
-        "tags":["Instances & Connection"],
+        "tags": ["Instances & Connection"],
         "summary": "Init an Instance",
-        "description": "Init a WhatsApp instance and get a QR code.",
+        "description": "Init a WhatsApp instance and get a QR code.\n\n<details>\n<summary>📘 View Code Examples</summary>\n\n**cURL**\n```bash\n# Init a WhatsApp instance\ncurl -X POST https://chatter.plus/api/instance/init \\\n  -H \"Authorization: Bearer YOUR_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"instanceId\": \"67fc0ba228b90f67bf93deeb\"}'\n```\n\n**Node.js (Axios)**\n```js\naxios.post('https://chatter.plus/api/instance/init', {\n  instanceId: '67fc0ba228b90f67bf93deeb'\n}, {\n  headers: {\n    Authorization: 'Bearer YOUR_API_KEY'\n  }\n}).then(res => console.log(res.data));\n```\n\n**Python (requests)**\n```python\nimport requests\n\nheaders = {\"Authorization\": \"Bearer YOUR_API_KEY\"}\nbody = {\"instanceId\": \"67fc0ba228b90f67bf93deeb\"}\n\nres = requests.post(\"https://chatter.plus/api/instance/init\", json=body, headers=headers)\nprint(res.json())\n```\n\n</details>",
         "requestBody": {
           "content": {
             "application/json": {
@@ -153,10 +337,50 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "200",
+                      "message": "Your instance has been correctly started.",
+                      "data": {
+                        "instance": {
+                          "instanceId": "67fc0ba228b90f67bf93deeb",
+                          "name": "Name of instance",
+                          "user": "668cbd3c538dec001dd3a7ff",
+                          "session": "close",
+                          "webhook": "",
+                          "app": "whatsapp",
+                          "type": "trial",
+                          "status": "active",
+                          "start": 1744571298,
+                          "qr": "2@WPnACsITCz7azPGn4/BEzzGvgnkUea5pdV55APZtw2sJK05hbKV32lyTOrbTh7xwwW5kH1cOAmzolP31LDBKS11bKJAvVVKSzMI=,mHpDVEKlJH3VKvsa6c7A7w/Mdw4e9UAeVPWidi1l1TU=,SBwUe95wDyhtoBOEQC/vKBtx+LIbCO90CdnHz2OcPTs=,USc57FqJyqZwwMZYJ51TAgSLXA8DHvJThom/uw5F7vU=",
+                          "id": "67fc0ba228b90f67bf93deeb"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Error"
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "value": {
+                      "status": "400",
+                      "message": "The operation has failed",
+                      "error": "Your instance has not been correctly started."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -165,7 +389,8 @@
           }
         ]
       }
-    },
+    }
+,
     "/instance/contacts": {
       "post": {
         "tags":["Send and receive messages"],

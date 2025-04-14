@@ -24,12 +24,12 @@ const navItems: NavItem[] = [
   {
     icon: <BoxCubeIcon />,
     name: "Instances",
-    path: "/app/instances",
+    path: "/app/instances?page=1",
   },
   {
     icon: <PlugInIcon />,
     name: "Your API Key",
-    path: "/app/apikey",
+    path: "/app/apikey?page=1",
   },
   {
     icon: <DocsIcon />,

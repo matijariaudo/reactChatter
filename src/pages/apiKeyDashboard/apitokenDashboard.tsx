@@ -4,10 +4,25 @@ import { useEffect, useState } from "react";
 import ApikeyList from "./apiTokenList.js";
 import ApiTokenForm from "./apiTokenForm.js";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb.js";
+import { useSearchParams } from "react-router";
 
 export default function ApiTokenDashBoard() {
   const [actionToken,setActionToken]=useState(0)
-  const [instanceConfig,setInstanceConfig]=useState<string>('')
+  const [instanceConfig,setInstanceConfig]=useState<string>('');
+
+  //Para cuando toco en el Sidebar vaya a la pagina 1
+  const [searchParams, setSearchParams] = useSearchParams();
+  const typeAction = searchParams.get('page');
+  useEffect(() => {
+    if (typeAction) {
+      // Limpiar el parámetro `page` de la URL
+      searchParams.delete('page');
+      setSearchParams(searchParams); // actualiza la URL
+      setActionToken(parseInt(typeAction) || 1);
+    }
+  }, [typeAction]);
+  //FIN -> Sidebar vaya a la pagina 1
+
   useEffect(()=>{
     if(actionToken!=3){
         setInstanceConfig('');

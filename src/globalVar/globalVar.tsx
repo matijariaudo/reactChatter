@@ -13,7 +13,7 @@ interface User{
 export interface instancesFunction{
     fetchInstances: () => Promise<void>;
     deleteInstances: (id: string) => Promise<boolean>;
-    createInstances: (body:{name:string,webhook:string,type:string})=>Promise<boolean>
+    createInstances: (body:{name:string,webhook:string,type:string})=>Promise<boolean | any>
 } 
 export interface TokensFunction{
   fetchTokens:() => Promise<void>;
@@ -119,7 +119,7 @@ export default function GlobalContextProvider({ children }: { children: ReactNod
              if(errors){
                throw new Error(errors)
              }
-             return true;
+             return {instance: dataInstances.data.instance};
         } catch (error) {
              console.log(error)
              return false;             

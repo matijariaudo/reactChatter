@@ -9,12 +9,13 @@ import { useGlobalData } from "../../globalVar/globalVar";
 
 
 
-export default function InstancesFrom({show,setAction}:{show:boolean,setAction:(action:number)=>void}){
+export default function InstancesFrom({show,setAction,setInstanceConfig}:{show:boolean,setAction:(action:number)=>void,setInstanceConfig:(instanceConfig:string)=>void}){
     const [input,setInput]=useState("");
     const [select,setSelect]=useState('');
     const [webhook,setWebhook]=useState('')
     const {instancesFunction}=useGlobalData();
     const {createInstances}=instancesFunction;
+
     async function clickButtonCreate(){
         if(webhook!='' && !isValidURL(webhook)){
             alert('You must enter a url');
@@ -31,6 +32,9 @@ export default function InstancesFrom({show,setAction}:{show:boolean,setAction:(
             setAction(2)
            return 
         }else{
+           const {instance}=rta;
+           if(!instance){return;}  
+           setInstanceConfig(instance.instanceId)
            setAction(99); 
         }
     }
@@ -62,7 +66,7 @@ export default function InstancesFrom({show,setAction}:{show:boolean,setAction:(
                     <div>
                     <Label>Instance type</Label>
                     <Select
-                    options={[{ value: "trial", label: "Trial" },{ value: "free", label: "Free" }]}
+                    options={[{ value: "trial", label: "Trial" },{ value: "full", label: "Full" }]}
                     placeholder="Select Option"
                     onChange={(e)=>{setSelect(e)}}
                     className="dark:bg-dark-900"

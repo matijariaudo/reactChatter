@@ -64,8 +64,8 @@ const QRCodeComponent = ({ text }: { text: string }) => {
                     padding: "0",
                 }}
             />
-            <div style={{margin:'-140px 0px 80px 80px',height:'60px',width:'60px',zIndex:9999}}>
-                <img src="/app/images/template/wsplogo.gif" className="gradient-border" style={{width:'90px',borderRadius:'1000px',border:'3px solid #00D5B5'}}></img>
+            <div style={{margin:'-140px 0px 80px 80px',height:'60px',width:'60px',zIndex:9999}} className="hidden">
+                <img src="/app/images/template/wsplogo.gif" className="gradient-border " style={{width:'90px',borderRadius:'1000px',border:'3px solid #00D5B5'}}></img>
             </div>
         </>
     );

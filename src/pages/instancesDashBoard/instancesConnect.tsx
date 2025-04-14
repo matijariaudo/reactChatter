@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import ComponentCard from "../../components/common/ComponentCard"
 import { useGlobalData } from "../../globalVar/globalVar"
 import QRCodeComponent from "./Qr"
+import src from '../../svg';
 
 
 
@@ -112,26 +113,55 @@ function InstancesConnectionForm({instanceConfig,setAction,action}:{instanceConf
     return(
         <div className="text-black dark:text-white">
             <ComponentCard title="Connect your instance with Whatsapp">
-            <p>1- Open your whatsapp or whatsapp bussiness in your phone.</p>
-            <p>2- Open linked devices.</p>
-            <p>3- Scan the following QR code.</p>
-            <div className={`${status=='qr'?'':'hidden'}`}>
-            <div className={`${qr!=''?'':'hidden'}`}><QRCodeComponent text={qr || ''} /></div>
-            <div className={`${qr!=''?'hidden':''}`}>
-                <div style={{width: "150px",height:"150px",textAlign:'center'}}>
-                    <div className="lds-hourglass"></div>
-                      <p style={{marginTop:'-30px'}}>Loading QR</p>
+              <div className="w-full flex flex-col md:flex-row">
+                <div className="w-full px-3 md:hidden mb-10">
+                    <p className="mb-2">1- Open your whatsapp or whatsapp bussiness in your phone.</p>
+                    <p className="mb-2">2- Open linked devices.</p>
+                    <p className="mb-2">3- Scan the following QR code.</p>
+                    <div className={`${status=='qr'?'':'hidden'}`}>
+                    <div className={`${qr!=''?'':'hidden'}`}><QRCodeComponent text={qr || ''} /></div>
+                    <div className={`${qr!=''?'hidden':''}`}>
+                        <div style={{width: "150px",height:"150px",textAlign:'center'}}>
+                            <div className="lds-hourglass"></div>
+                              <p style={{marginTop:'-30px'}}>Loading QR</p>
+                            </div>
                     </div>
-            </div>
-            </div>
-            <div className={`${(status=='connected' || status=='connecting')?'':'hidden'}`}>
-                <div style={{width: "150px",height:"150px",textAlign:'center'}}><div className="lds-hourglass"></div>
-                <p style={{marginTop:'-30px'}}>Connecting</p>
+                    </div>
+                    <div className={`${(status=='connected' || status=='connecting')?'':'hidden'}`}>
+                        <div style={{width: "150px",height:"150px",textAlign:'center'}}><div className="lds-hourglass"></div>
+                        <p style={{marginTop:'-30px'}}>Connecting</p>
+                        </div>
+                    </div>
+                    <div className={`${(status=='close' || status=='init')?'':'hidden'}`}>
+                        <button onClick={initInstance} className="mt-0 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> Get your QR clicking here </button>
+                    </div>
                 </div>
-            </div>
-            <div className={`${(status=='close' || status=='init')?'':'hidden'}`}>
-                <button onClick={initInstance} className="mt-0 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> Get your QR clicking here </button>
-            </div>
+                <div className="w-full md:w-1/4">
+                  <img src="images/template/wspconnect.gif" className="w-100 rounded-[30px]" style={{border:'4px solid #000'}}></img>
+                </div>
+                <div className="w-full md:w-3/4 px-3 hidden md:block">
+                    <p className="mb-2">1- Open your whatsapp or whatsapp bussiness in your phone.</p>
+                    <p className="mb-2">2- Open linked devices.</p>
+                    <p className="mb-2">3- Scan the following QR code.</p>
+                    <div className={`${status=='qr'?'':'hidden'}`}>
+                    <div className={`${qr!=''?'':'hidden'}`}><QRCodeComponent text={qr || ''} /></div>
+                    <div className={`${qr!=''?'hidden':''}`}>
+                        <div style={{width: "150px",height:"150px",textAlign:'center'}}>
+                            <div className="lds-hourglass"></div>
+                              <p style={{marginTop:'-30px'}}>Loading QR</p>
+                            </div>
+                    </div>
+                    </div>
+                    <div className={`${(status=='connected' || status=='connecting')?'':'hidden'}`}>
+                        <div style={{width: "150px",height:"150px",textAlign:'center'}}><div className="lds-hourglass"></div>
+                        <p style={{marginTop:'-30px'}}>Connecting</p>
+                        </div>
+                    </div>
+                    <div className={`${(status=='close' || status=='init')?'':'hidden'}`}>
+                        <button onClick={initInstance} className="mt-0 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> Get your QR clicking here </button>
+                    </div>
+                </div>
+              </div>
             </ComponentCard>
             
         </div>

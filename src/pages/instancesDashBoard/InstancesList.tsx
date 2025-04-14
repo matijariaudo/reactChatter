@@ -25,19 +25,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
       setAction(3);
   }
 
-  useEffect(()=>{
-    console.log("ACTIONNN",action)
-    if(action==100){
-      console.log(action,"AAAC")
-      setAction(0)
-      fetchInstances()
-    }
-    if(action==99){
-      console.log(action,"AAAB")
-      setAction(3)
-      fetchInstances()
-    }
-  },[action])
+
   
 
   const instancesShowArray=useMemo(()=>{
@@ -49,7 +37,6 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
   },[instances,buttonConnected])
 
   useEffect(()=>{
-    console.log(action,"AAAA")
     if(instances){if(action!=3){setAction(1)}}
   },[instancesShowArray])
 
