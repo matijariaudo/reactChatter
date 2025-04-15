@@ -123,7 +123,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                 <TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
                    <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a>
                 </TableCell><TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
-                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.instanceId}</a>
+                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.instanceId} </a>
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                 {instance.type}
