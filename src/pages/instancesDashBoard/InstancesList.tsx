@@ -84,12 +84,6 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                InstanceId
-              </TableCell>
-              <TableCell
-                isHeader
-                className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-              >
                 Type
               </TableCell>
               <TableCell
@@ -121,9 +115,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
               <TableRow key={instance.instanceId} className="">
                 
                 <TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
-                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a>
-                </TableCell><TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
-                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.instanceId} </a>
+                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name} / Id: {instance.instanceId}</a>
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                 {instance.type}
