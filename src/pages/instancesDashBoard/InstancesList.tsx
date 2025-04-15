@@ -40,6 +40,21 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
     if(instances){if(action!=3){setAction(1)}}
   },[instancesShowArray])
 
+  const handleCopy = (text:string) => {
+    if (navigator && navigator.clipboard) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          console.log("Copiado!");
+          alert('The token has been copied.')
+        })
+        .catch(err => {
+          console.error("Error al copiar", err);
+        });
+    } else {
+      console.warn("Clipboard API no disponible");
+    };
+  };
+
   return (
     <div  className={`overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 ${!show?'hidden':''}`}>
       <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
@@ -84,6 +99,12 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
+                InstanceId 
+              </TableCell>
+              <TableCell
+                isHeader
+                className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
                 Type
               </TableCell>
               <TableCell
@@ -114,14 +135,20 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
             {instancesShowArray.map((instance:any,i:number) => (
               <TableRow key={instance.instanceId} className="">
                 
-                <TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
-                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name} / Id: {instance.instanceId}</a>
+                <TableCell className="py-3 items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
+                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a>
+                </TableCell>
+                <TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80">
+                    {instance.instanceId.slice(0,10)}...
+                    <button onClick={()=>{handleCopy(instance.instanceId)}} 
+                    className="inline-flex items-center gap-2 text-[.6em] rounded-lg border border-gray-300 bg-white px-3 py-.5 ml-0 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
+                    Copy
+                    </button>
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                 {instance.type}
                 </TableCell>
                 <TableCell className={`py-3 text-${instance.session=='connected'?'emerald-400':'gray-500'} text-theme-sm text-center dark:text-${instance.session=='connected'?'emerald-400':'gray-400'}`}>
-                
                 <Badge
                     size="sm"
                     color={
@@ -173,7 +200,14 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                 </Badge>
                 </div>
                 <a className="text-xs">{instance.type}</a>
-                <h3>{instance.name}</h3>
+                  <h3><a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a></h3>
+                  <div className="mb-1 flex text-xs">
+                    InstanceId: {instance.instanceId.slice(0,30)}...
+                    <button onClick={()=>{handleCopy(instance.instanceId)}} 
+                    className="inline-flex items-center gap-2 text-[.6em] rounded-lg border border-gray-300 bg-white px-3 py-.5 ml-0 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
+                    Copy
+                    </button>
+                  </div>
                   <button onClick={()=>{setOpen(true);setInstanceDelete(instance.instanceId)}} 
                   className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
                   <TrashBinIcon/>
