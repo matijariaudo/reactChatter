@@ -29,6 +29,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
   
 
   const instancesShowArray=useMemo(()=>{
+    if(instances){console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAA",instances);if(action!=3){setAction(1)}}
     if(!instances){return [];}
     const newInstances=[...instances]
     return newInstances.filter(a=>{

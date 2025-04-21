@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import ComponentCard from "../../components/common/ComponentCard"
 import { useGlobalData } from "../../globalVar/globalVar"
 import QRCodeComponent from "./Qr"
-import src from '../../svg';
 
 
 

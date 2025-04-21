@@ -23,6 +23,7 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
                                                     notify?: string;
                                                     show: string;
                                                     group: boolean;
+                                                    jid:string;
                                                   }>>([]);
     const [instanceData,setInstanceData]=useState<any>()
     const [load,setLoad]=useState(true);
@@ -60,14 +61,13 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
             },
             body: JSON.stringify({instanceId:instanceDataId})
           }).then(response => response.json());
-          const newContacts=data.data.contacts.map((a,i)=>{
+          const newContacts=data.data.contacts.map((a:any,i:number)=>{
             const newVar={...a,show:a.name || a.notify,group:a.id.endsWith('@g.us'),number:a.id.split("@")[0]}
-            //console.log(newVar)
             return newVar
           })
-          newContacts.sort((a, b) => a.show.localeCompare(b.show));
-          const users = newContacts.filter(a => !a.group);
-          const groups = newContacts.filter(a => a.group);
+          newContacts.sort((a:any,b:any ) => a.show.localeCompare(b.show));
+          const users = newContacts.filter((a:any,i:number) => !a.group);
+          const groups = newContacts.filter((a:any,i:number) => a.group);
           setContacts([...users, ...groups]);
           setAction(4)
         } catch (error) {
@@ -105,6 +105,7 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
 
     async function chooseContact(newVal){
       setChats(undefined)
+      console.log("AAAAAAAAAAAAAAAAAAAA",newVal)
       setContactChoose(newVal);
       setTimeout(()=>{
         checkChatsData(newVal);
@@ -112,6 +113,7 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
       
     }
     async function checkChatsData(newVal){
+      console.log(newVal,"AAAAAAa")
       try {
         const data=await fetch(url+'/api/instance/chat', {
           method: 'POST',
@@ -119,10 +121,10 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
             'Authorization': `Bearer ${userToken}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({instanceId:instanceDataId,remoteJid:newVal?.id,qty:1000000})
+          body: JSON.stringify({instanceId:instanceDataId,remoteJid:newVal?.jid,qty:1000000})
         }).then(response => response.json());
         setChats(data.data.chats)
-        console.log(data.data.chats)
+        console.log("Chats",data.data.chats)
         setTimeout(() => {
           if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -143,7 +145,7 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
             'Authorization': `Bearer ${userToken}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({instanceId:instanceDataId,remoteJid:contactChoose?.id || '', message: inputWrite})
+          body: JSON.stringify({instanceId:instanceDataId,remoteJid:contactChoose?.jid || '', message: inputWrite})
         }).then(response => response.json());
         if(data.data?.errors){alert('An error has happended');return}
         const newChat=chats?[...chats,data.data.message]:[data.data];
@@ -186,10 +188,12 @@ function InstancesDataDiv({instanceDataId,setAction,action}:{instanceDataId:any,
                     {
                       chats?.sort((a,b)=> a.timestamp-b.timestamp).map(a=>{
                         return(
-                        <div className={`mb-2 break-all ${(a.reaction || a.empty)?'hidden':''} ${a.fromMe?"w-[80%] p-2 rounded-sm ml-20 mb-2 bg-emerald-100 text-gray-800 dark:bg-emerald-500 dark:text-white/80":"w-[80%] p-2 rounded-sm bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white/80"}`}>
+                        <div key={a.messageId} className={`mb-2 break-all ${(a.reaction || a.empty)?'hidden':''} ${a.fromMe?"w-[80%] p-2 rounded-sm ml-20 mb-2 bg-emerald-100 text-gray-800 dark:bg-emerald-500 dark:text-white/80":"w-[80%] p-2 rounded-sm bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white/80"}`}>
+                          <p className="text-xs">{a.messageId}</p>
                           <b>{contactChoose?.group? (a.pushName || a.participant.split('@')[0])+": ":''}</b>
                           {a.conversation}
                           {a?.media?.media?`${a?.media?.media}`:''}
+                          {a?.deleted?`A message(${a.deleted.messageId}) was deleted`:''}
                           <button className={`float-right text-xs border-1 p-1 rounded-sm shadow ${a?.media?.media?'hidden':'hidden'}`}>show</button>
                         </div>
                       )})
