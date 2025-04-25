@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface Option {
   value: string;
@@ -28,6 +28,9 @@ const Select: React.FC<SelectProps> = ({
     setSelectedValue(value);
     onChange(value); // Trigger parent handler
   };
+  useEffect(() => {
+    setSelectedValue(defaultValue);
+  }, [defaultValue]);
 
   return (
     <select

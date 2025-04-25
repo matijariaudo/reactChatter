@@ -13,7 +13,8 @@ interface User{
 export interface instancesFunction{
     fetchInstances: () => Promise<void>;
     deleteInstances: (id: string) => Promise<boolean>;
-    createInstances: (body:{name:string,webhook:string,type:string})=>Promise<boolean | any>
+    createInstances: (body:{name:string,webhook:string,type:string})=>Promise<boolean | any>,
+    editInstances: (body:{name:string,webhook:string,type:string,instanceId:string})=>Promise<boolean | any>;
 } 
 export interface TokensFunction{
   fetchTokens:() => Promise<void>;
@@ -126,6 +127,30 @@ export default function GlobalContextProvider({ children }: { children: ReactNod
         }
    }
 
+   async function editInstances(body:{name:string,webhook:string,type:string,instanceId:string}){
+        try {
+              console.log(body) 
+              const dataInstances = await fetch(url+'/api/instance/edit', {
+              method: 'POST',
+              headers: {   
+                'Authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({...body})
+              }).then(response => response.json());
+              console.log(dataInstances)
+              const {errors}=dataInstances.data;
+              if(errors){
+                throw new Error(errors)
+              }
+              return {instance: dataInstances.data.instance};
+          } catch (error) {
+              console.log(error)
+              return false;             
+          }
+  }
+                  
+
   async function fetchUser() {
         try {
           const dataUser = await fetch(url+'/login/users/check', {
@@ -230,7 +255,8 @@ export default function GlobalContextProvider({ children }: { children: ReactNod
     const instancesFunction={
         fetchInstances,
         deleteInstances,
-        createInstances
+        createInstances,
+        editInstances
     };
     const tokensFunction={
       fetchTokens,

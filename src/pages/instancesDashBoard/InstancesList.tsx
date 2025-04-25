@@ -5,7 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import {  TrashBinIcon } from "../../icons";
+import {  PencilIcon, TrashBinIcon } from "../../icons";
 import { useGlobalData } from "../../globalVar/globalVar";
 import { useEffect, useMemo, useState } from "react";
 import { Modal } from "../../components/ui/modal";
@@ -16,7 +16,7 @@ import Badge from "../../components/ui/badge/Badge";
 export default function InstancesList({show,setAction,setInstanceConfig,setInstanceDataId,action}:{show:boolean,setAction:(action:number)=>void,instanceConfig:string,setInstanceDataId:(instanceConfig:string)=>void,setInstanceConfig:(instanceConfig:string)=>void,action:number}) {
   const {instances,instancesFunction}=useGlobalData();
   const {fetchInstances}=instancesFunction;
-  const [instanceDelete,setInstanceDelete]=useState<string>("AAA")
+  const [instanceDelete,setInstanceDelete]=useState<string>("")
   const [open,setOpen]=useState<boolean>(false)
   const [buttonConnected,setButtonConnected]=useState<boolean>(false)
 
@@ -29,7 +29,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
   
 
   const instancesShowArray=useMemo(()=>{
-    if(instances){console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAA",instances);if(action!=3){setAction(1)}}
+    if(instances){if(action!=3){setAction(1)}}
     if(!instances){return [];}
     const newInstances=[...instances]
     return newInstances.filter(a=>{
@@ -137,7 +137,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
               <TableRow key={instance.instanceId} className="">
                 
                 <TableCell className="py-3 items-center gap-3 text-gray-700 dark:text-white/80 cursor-pointer">
-                   <a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a>
+                   <a onClick={()=>{if(instance.session==='connected'){setInstanceDataId(instance.instanceId);}}}>{instance.name}</a>
                 </TableCell>
                 <TableCell className="py-3 flex items-center gap-3 text-gray-700 dark:text-white/80">
                     {instance.instanceId.slice(0,10)}...
@@ -174,6 +174,10 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                   className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
                   <TrashBinIcon/>
                   </button>
+                  <button onClick={()=>{setInstanceConfig(instance.instanceId);setAction(2);}} 
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
+                  <PencilIcon/>
+                  </button>
                 </TableCell>
                 
               </TableRow>
@@ -201,7 +205,7 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                 </Badge>
                 </div>
                 <a className="text-xs">{instance.type}</a>
-                  <h3><a onClick={()=>{setInstanceDataId(instance.instanceId);}}>{instance.name}</a></h3>
+                  <h3><a onClick={()=>{if(instance.session==='connected'){setInstanceDataId(instance.instanceId);}}}>{instance.name}</a></h3>
                   <div className="mb-1 flex text-xs">
                     InstanceId: {instance.instanceId.slice(0,30)}...
                     <button onClick={()=>{handleCopy(instance.instanceId)}} 
@@ -212,6 +216,10 @@ export default function InstancesList({show,setAction,setInstanceConfig,setInsta
                   <button onClick={()=>{setOpen(true);setInstanceDelete(instance.instanceId)}} 
                   className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
                   <TrashBinIcon/>
+                  </button>
+                  <button onClick={()=>{setInstanceConfig(instance.instanceId);setAction(2);}} 
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[8px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"> 
+                  <PencilIcon/>
                   </button>
                   <button onClick={()=>{checkInstance(instance.instanceId)}} 
                   className={`items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 pt-[5px] pb-[4px] ml-1 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 ${instance.session=='connected'?'hidden':'inline-flex'}`}> 

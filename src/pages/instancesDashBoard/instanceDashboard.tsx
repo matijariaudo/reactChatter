@@ -42,10 +42,13 @@ export default function Home() {
 
   useEffect(()=>{
     if(action!=0){
-      if(action!=3 && action!=99){setInstanceConfig('');}
+      if(action!=3 && action!=2 && action!=99){setInstanceConfig('');}
       if(action!=4){setInstanceDataId('')}
     }
   },[action])
+  useEffect(()=>{
+      console.log("Cambio en instance",instanceConfig)
+  },[instanceConfig])
 
   return (
     <>
@@ -66,7 +69,7 @@ export default function Home() {
           </center>
         </div>
         <InstancesList show={action==1} instanceConfig={instanceConfig} setInstanceDataId={setInstanceDataId} action={action} setInstanceConfig={setInstanceConfig} setAction={setAction}/>
-        <InstancesFrom show={action==2} setAction={setAction} setInstanceConfig={setInstanceConfig}/>
+        <InstancesFrom show={action==2} setAction={setAction} instanceConfig={instanceConfig} setInstanceConfig={setInstanceConfig}/>
         <InstancesConnection show={action==3} instanceConfig={instanceConfig} action={action} setAction={setAction}/>
         <InstancesData show={action==4} instanceDataId={instanceDataId}  action={action} setAction={setAction}/>
         </div>
